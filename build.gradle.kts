@@ -5,6 +5,8 @@ val logback_version: String by project
 plugins {
     kotlin("jvm") version "1.8.20"
     id("io.ktor.plugin") version "2.2.4"
+    id("org.graalvm.buildtools.native") version "0.9.20"
+    id("com.expediagroup.graphql") version "7.0.0-alpha.5"
 }
 
 group = "com.example"
@@ -26,4 +28,24 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+graphql {
+    graalVm {
+        packages = listOf("com.example")
+    }
+}
+
+graalvmNative {
+    toolchainDetection.set(false)
+    binaries {
+        named("main") {
+            verbose.set(true)
+            buildArgs.add("--initialize-at-build-time=io.ktor,kotlin,ch.qos.logback,org.slf4j")
+            buildArgs.add("-H:+ReportExceptionStackTraces")
+        }
+        metadataRepository {
+            enabled.set(true)
+        }
+    }
 }

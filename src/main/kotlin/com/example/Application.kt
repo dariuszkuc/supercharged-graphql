@@ -39,6 +39,9 @@ fun Application.module() {
             mutations = listOf(
                 ConferenceMutation()
             )
+            typeHierarchy = mapOf(
+                People::class to listOf(Attendee::class, Speaker::class)
+            )
         }
         server {
             contextFactory = CustomContextFactory()
