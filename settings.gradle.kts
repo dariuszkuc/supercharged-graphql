@@ -1,1 +1,1 @@
-rootProject.name = "com.example.supercharged-graphql"
+rootProject.name = "supercharged-graphql"
